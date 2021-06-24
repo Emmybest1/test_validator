@@ -1,40 +1,44 @@
-const validate = (argument) => {
-    if (typeof argument == "string") {
-        const argLength = argument.length;
-        const argRegExp = /^.*-s/i;
+const expect = (actualResult) => ({
+    toEqual(expectedResult){
+      if(actualResult !== expectedResult){
+        return new Error(`${actualResult} is not equal to ${expectedResult}`);
+      }
+      return actualResult;
+    }
+  })
+  
 
-        switch (true) {
-            case argLength != "" && argLength > 0 && argLength < 3:
-                return true;
-
-            case argLength > 30:
-                return false;
-
-            case !argLength <= 10 && argLength > 10 && argLength < 30:
-                return true;
-
-            case argLength === 3:
-                return false;
-
-            case argRegExp.test(argument):
-                return true;
-
-            default:
-                return "Something is invalid 💔";
-        }
-    } else throw new Error("Please insert a string value");
-};
-
-const test_1 = validate("le");
-const test_2 = validate("leshdhdhdhdhdhhdg8983uhdhdhdhdhhdhdd");
-const test_3 = validate("hdhdhdhddhddd");
-const test_4 = validate("dot");
-const test_5 = validate(" ");
-const test_6 = validate("😄☕️");
-
-console.log(test_1);
-console.log(test_2);
-console.log(test_3);
-console.log(test_4);
-console.log(test_5);
-console.log(test_6);
+  String.prototype.validate = function(){
+  const argRegExp = /^.*-s/i;
+    
+    switch(true){
+              case this.length != "" && this.length > 0 && this.length < 3:
+                  return true;
+        
+              case this.length > 30:
+                  return false;
+        
+              case !(this.length <= 10):
+                  return true;
+        
+              case this.length === 3:
+                  return false;
+        
+              case argRegExp.test(this):
+                  return true;
+        
+              default:
+                  return false;
+          }
+  }
+  
+  
+  //expect(0).toEqual(true);
+  expect("le".validate()).toEqual(true);
+  expect("leeeeeeeeeeeeeeeeeeeeeeeeeeeeee".validate()).toEqual(false);
+  expect("leeeeeeeeee".validate()).toEqual(true);
+  expect("lee".validate()).toEqual(false);
+  expect(" ".validate()).toEqual(true);
+  
+  
+  
